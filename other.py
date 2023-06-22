@@ -1,3 +1,3 @@
 
 def other():
-    print('Her is oter() function')
+    print('Here is other() function')
