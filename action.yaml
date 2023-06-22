@@ -8,11 +8,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - shell: python
+  - shell: bash
     id: init
     env:
       ocm_images: ${{ inputs.images }}
     run: |
-      import main
-      main.main()
-
+      python main.py
