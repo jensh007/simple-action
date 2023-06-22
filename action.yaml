@@ -12,4 +12,7 @@ runs:
     id: init
     env:
       ocm_images: ${{ inputs.images }}
-    run: main.py
+    run: |
+      import main
+      main.main()
+
