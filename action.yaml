@@ -8,9 +8,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - shell: bash
+  - shell: python
     id: init
     env:
       ocm_images: ${{ inputs.images }}
     run: |
-      python  "${{ github.action_path }}/main.py"
+      import sys
+      sys.path.append('${{ github.action_path }}')
+      import main
+      main.main()
+
