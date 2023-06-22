@@ -1,0 +1,15 @@
+name: 'OCM Simple Action'
+description: 'Simplify using OCM'
+inputs:
+  images:
+    description: 'Array of image tags to be added as resources'
+    required: true
+# outputs:
+runs:
+  using: "composite"
+  steps:
+  - shell: python
+    id: init
+    env:
+      ocm_images: ${{ inputs.images }}
+    run: main.py

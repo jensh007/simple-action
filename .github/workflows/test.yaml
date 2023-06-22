@@ -1,0 +1,12 @@
+name: Test Simple OCM
+on:
+  workflow_dispatch:
+jobs:
+  call-action:
+    name: call simple ocm action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: jensh007/simple-action@main
+        with:
+          images: ghcr.io/jensh007/ocm//ocm.software/ocmcli-image:0.3.0-rc.2
