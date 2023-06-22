@@ -8,8 +8,12 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - shell: python
-    id: init
+  - id: init
+    shell: bash
+    run: |
+      pip install -r ${{ github.action_path }}/requirements.txt
+  - id: python
+    shell: python
     env:
       ocm_images: ${{ inputs.images }}
     run: |
