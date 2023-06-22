@@ -13,4 +13,4 @@ runs:
     env:
       ocm_images: ${{ inputs.images }}
     run: |
-      python main.py
+      python  "${{ github.action_path }}/main.py"
