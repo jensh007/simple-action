@@ -15,7 +15,7 @@ runs:
     run: |
       import os,sys
       print('action_path: ${{ github.action_path }}')
-      print(f'cwd: {os.getcwd()}'')
+      print(f'cwd: {os.getcwd()}')
       print(f'listdir cwd: {os.listdir(os.getcwd())}')
       print(f'listdir action_path: {os.listdir('${{ github.action_path }}')0}')
       sys.path.append('${{ github.action_path }}')
