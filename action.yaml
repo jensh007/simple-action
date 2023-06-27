@@ -1,6 +1,15 @@
 name: 'OCM Simple Action'
 description: 'Simplify using OCM'
 inputs:
+  name:
+    description: 'Name of component'
+    required: true
+  version:
+    description: 'Version of component'
+    required: true
+  provider:
+    description: 'Provider of component'
+    required: false
   images:
     description: 'List of image tags to be added as resources'
     required: false
@@ -27,6 +36,9 @@ runs:
   - id: python
     shell: python
     env:
+      ocm_name: ${{ inputs.name }}
+      ocm_version: ${{ inputs.version }}
+      ocm_provider: ${{ inputs.provider }}
       ocm_images: ${{ inputs.images }}
       ocm_helm_charts: ${{ inputs.helm_charts }}
       ocm_references: ${{ inputs.references }}

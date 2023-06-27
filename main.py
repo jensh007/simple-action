@@ -9,6 +9,9 @@ import other
 
 def main():
     global_dict:dict[str, any] = {}
+    name = os.getenv("ocm_name")
+    version = os.getenv("ocm_version")
+    provider = os.getenv("ocm_provider")
     image_yaml = os.getenv("ocm_images")
     helm_charts_yaml =  os.getenv('ocm_helm_charts')
     references_yaml =  os.getenv('ocm_references')
@@ -18,6 +21,10 @@ def main():
     print(f'my input variable "ocm_images": {image_yaml}')
     other.other()
     print(f' Python version: {sys.version_info}')
+
+    global_dict['name'] = name
+    global_dict['version'] = version
+    global_dict['provider'] = provider
 
     if image_yaml:
         d = yaml.safe_load(image_yaml)
