@@ -2,8 +2,20 @@ name: 'OCM Simple Action'
 description: 'Simplify using OCM'
 inputs:
   images:
-    description: 'Array of image tags to be added as resources'
-    required: true
+    description: 'List of image tags to be added as resources'
+    required: false
+  helm_charts:
+    description: 'List of helm-charts to be added as resources'
+    required: false
+  files:
+    description: 'List of files to be added as resources'
+    required: false
+  references:
+    description: 'List of component-references to be added'
+    required: false
+  labels:
+    description: 'List of component-references to be added'
+    required: false
 # outputs:
 runs:
   using: "composite"
@@ -16,6 +28,10 @@ runs:
     shell: python
     env:
       ocm_images: ${{ inputs.images }}
+      ocm_helm_charts: ${{ inputs.helm_charts }}
+      ocm_references: ${{ inputs.references }}
+      ocm_files: ${{ inputs.files }}
+      ocm_labels: ${{ inputs.labels }}
     run: |
       import sys
       sys.path.append('${{ github.action_path }}')

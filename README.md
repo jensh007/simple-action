@@ -1,6 +1,6 @@
 # simple-action
 
-Simple Github action for simplified providing bill-of-deliveries using[Open-Component-Model](https://ocm.software/)
+Simple Github action for simplified providing bill-of-deliveries using [Open Component Model](https://ocm.software/)
 
 ## Ideas:
 
@@ -12,7 +12,9 @@ Simple Github action for simplified providing bill-of-deliveries using[Open-Comp
 * no additional config files: `resource.yaml`, `components.yaml`
 
 ## Disclaimer:
+
 Work-in-progress, evaluation state, no working code, do not try
+
 ## Example:
 
 ```yaml
@@ -67,7 +69,7 @@ jobs:
           name: microblog
           version: 1.0.0
           provider: github.com/jensh007
-          ocm_images:
+          images:
           - ${{ env.OCI_URL }}/${{ env.COMP_NAME }}:${{ env.VERSION }}
           - eu.gcr.io/k8s-lm/landscaper-controller:4.8.6
           helm_charts:
@@ -83,4 +85,7 @@ jobs:
           labels:
           - key: last-scanned
             value: 2023-06-21T18:00:00
+          - position: resources/images
+            key: registry-provider
+            value: Google
 ```
