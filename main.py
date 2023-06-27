@@ -3,7 +3,7 @@ import os
 import pprint
 import sys
 # from ruamel.yaml import YAML
-from yaml import YAML
+import yaml
 
 import other
 
@@ -19,21 +19,20 @@ def main():
     other.other()
     print(f' Python version: {sys.version_info}')
 
-    yaml=YAML(typ='safe')
     if image_yaml:
-        d = yaml.load(image_yaml)
+        d = yaml.safe_load(image_yaml)
         global_dict['images'] = d
     if helm_charts_yaml:
-        d = yaml.load(helm_charts_yaml)
+        d = yaml.safe_load(helm_charts_yaml)
         global_dict['helm_charts'] = d
     if references_yaml:
-        d = yaml.load(references_yaml)
+        d = yaml.safe_load(references_yaml)
         global_dict['references'] = d
     if files_yaml:
-        d = yaml.load(files_yaml)
+        d = yaml.safe_load(files_yaml)
         global_dict['files'] = d
     if labels_yaml:
-        d = yaml.load(labels_yaml)
+        d = yaml.safe_load(labels_yaml)
         global_dict['labels'] = d
 
     print("Global Dictionary:")
