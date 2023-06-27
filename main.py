@@ -36,7 +36,7 @@ def main():
         global_dict['labels'] = d
 
     print("Global Dictionary:")
-    pprint.print(global_dict)
+    pprint.pprint(global_dict)
 
 
 if __name__ == '__main__':
