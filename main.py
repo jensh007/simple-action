@@ -9,6 +9,7 @@ import other
 
 def main():
     global_dict:dict[str, any] = {}
+    comp_root = os.getenv("ocm_comp_root")
     name = os.getenv("ocm_name")
     version = os.getenv("ocm_version")
     provider = os.getenv("ocm_provider")

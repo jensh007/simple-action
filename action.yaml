@@ -25,6 +25,9 @@ inputs:
   labels:
     description: 'List of component-references to be added'
     required: false
+  comp_root:
+    description: 'Root URL for component descriptors (OCI)'
+    required: false
 # outputs:
 runs:
   using: "composite"
@@ -44,6 +47,7 @@ runs:
       ocm_references: ${{ inputs.references }}
       ocm_files: ${{ inputs.files }}
       ocm_labels: ${{ inputs.labels }}
+      ocm_comp_root: ${{ inputs.comp_root}}
     run: |
       import sys
       sys.path.append('${{ github.action_path }}')

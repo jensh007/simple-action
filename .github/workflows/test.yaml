@@ -9,6 +9,7 @@ jobs:
       - name: test simple ocm
         uses: jensh007/simple-action@main
         with:
+          comp_root: ghcr.io/jensh007/microblog/ocm
           name: microblog
           version: 1.0.0
           provider: github.com/jensh007
@@ -16,11 +17,11 @@ jobs:
             - ghcr.io/jensh007/ocm//ocm.software/ocmcli-image:0.3.0-rc.2
             - foo/bar:1.0.0
           helm_charts: |
-            - ./my-charts
+            - charts/mariadb-11.4.2.tgz
             - https://charts.bitnami.com/bitnami/mariadb:10.11.2
           files: |
-            name: readme.md
-            content-type: text/markdown
+            - name: readme.md
+              content-type: text/markdown
           references: |
             - name: mariadb
               componentName: github.com/jensh007/mariadb:10.11.2

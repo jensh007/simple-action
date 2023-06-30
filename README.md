@@ -66,26 +66,27 @@ jobs:
       - name: create OCM
         uses: jensh007/simple-action@main
         with:
+          comp_root: ghcr.io/jensh007/microblog/ocm
           name: microblog
           version: 1.0.0
           provider: github.com/jensh007
-          images:
-          - ${{ env.OCI_URL }}/${{ env.COMP_NAME }}:${{ env.VERSION }}
-          - eu.gcr.io/k8s-lm/landscaper-controller:4.8.6
-          helm_charts:
-          - ./my-charts
-          - https://charts.bitnami.com/bitnami/mariadb:10.11.2
-          files:
-            name: readme.md
-            content-type: text/markdown
-          references:
-          - name: mariadb
-            componentName: github.com/jensh007/mariadb:10.11.2
-            version: ${MARIADB_VERSION}
-          labels:
-          - key: last-scanned
-            value: 2023-06-21T18:00:00
-          - position: resources/images
-            key: registry-provider
-            value: Google
+          images: |
+            - ${{ env.OCI_URL }}/${{ env.COMP_NAME }}:${{ env.VERSION }}
+            - eu.gcr.io/k8s-lm/landscaper-controller:4.8.6
+          helm_charts: |
+            - ./my-charts
+            - https://charts.bitnami.com/bitnami/mariadb:10.11.2
+          files: |
+            - name: readme.md
+              content-type: text/markdown
+          references: |
+            - name: mariadb
+              componentName: github.com/jensh007/mariadb:10.11.2
+              version: ${MARIADB_VERSION}
+          labels: |
+            - name: last-scanned
+              value: 2023-06-21T18:00:00
+            - position: resources/images
+              name: registry-provider
+              value: Google
 ```
