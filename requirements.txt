@@ -1,2 +1,5 @@
-requests==2.31.0
-PyYAML==6.0
+requests~=2.31.0
+PyYAML~=6.0
+dacite~=1.8.1
+gardener-component-model~=0.0.94
+gardener-oci~=1.2103.0

@@ -149,7 +149,7 @@ def parse_input_data(ocm_input: ocm_input_model.OcmInput, repoCtx: str, path: Pa
     labels = process_labels(ocm_input)
 
     component = cm.Component(
-        creationTime=datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(),
+        # creationTime=datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(),
         name=ocm_input.name,
         version=ocm_input.version,
         provider=ocm_input.provider,
