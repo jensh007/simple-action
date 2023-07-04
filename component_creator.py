@@ -81,7 +81,11 @@ def digest_and_store_file(fname: str, path: Path | str) -> tuple[str, int]:
     return sha, len
 
 
-def process_resources(ocm_input: ocm_input_model.OcmInput, path: Path | str) -> list[cm.Resource]:
+def process_resources(
+        ocm_input: ocm_input_model.OcmInput,
+        path: Path | str,
+        component_name: str,
+) -> list[cm.Resource]:
     resources = []
     if ocm_input.images:
         for image in ocm_input.images:
@@ -100,18 +104,17 @@ def process_resources(ocm_input: ocm_input_model.OcmInput, path: Path | str) -> 
                 print('http chart reference not yet implemented, will be ignored.')
                 _, name, ver = chart_name.split(':')
                 _, _, res_name = name.rpartition('/')
+                continue
             else:
                 name, ver = chart_name.split(':')
                 _, _, res_name = name.rpartition('/')
                 res_name = normalize_name(res_name)
                 sha, len  = digest_and_store_file(name, path)
                 # print(f'sha of {chart_name} is: {sha}')
-                access = cm.OciBlobAccess(
-                    type=cm.AccessType.LOCAL_BLOB,
-                    imageReference=chart_name,
+                access = cm.LocalBlobAccess(
+                    referenceName=f'{component_name }/{res_name}:{ver}',
                     mediaType='application/vnd.oci.image.manifest.v1+tar+gzip',
-                    digest=sha,
-                    size=len,
+                    localReference=f'sha256.{sha}',
                 )
             res = cm.Resource(
                 name=res_name,
@@ -126,12 +129,10 @@ def process_resources(ocm_input: ocm_input_model.OcmInput, path: Path | str) -> 
             sha, len  = digest_and_store_file(file.name, path)
             name = normalize_name(file.name)
             # print(f'sha of {chart_name} is: {sha}')
-            access = cm.OciBlobAccess(
-                type=cm.AccessType.LOCAL_BLOB,
-                imageReference=name,
-                mediaType=file.content_type,
-                digest=sha,
-                size=len,
+            access = cm.LocalBlobAccess(
+                referenceName=f'{component_name }/{name}:{ver}',
+                mediaType='application/vnd.oci.image.manifest.v1+tar+gzip',
+                localReference=f'sha256.{sha}',
             )
             res = cm.Resource(
                 name=name,
@@ -158,7 +159,7 @@ def parse_input_data(ocm_input: ocm_input_model.OcmInput, repoCtx: str, path: Pa
                 subPath=None,
                 type=cm.AccessType.OCI_REGISTRY
     )
-    resources = process_resources(ocm_input, path)
+    resources = process_resources(ocm_input, path, ocm_input.name)
     labels = process_labels(ocm_input)
 
     component = cm.Component(
