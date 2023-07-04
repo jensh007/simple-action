@@ -31,3 +31,8 @@ jobs:
               value: 2023-06-21T18:00:00
             - key: registry-provider
               value: Google
+      - name: Upload OCM Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ocm
+          path: gen/ca
