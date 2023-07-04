@@ -10,22 +10,22 @@ jobs:
         uses: jensh007/simple-action@main
         with:
           comp_root: ghcr.io/jensh007/microblog/ocm
-          name: microblog
+          name: github.com/jensh007/microblog
           version: 1.0.0
           provider: github.com/jensh007
           images: |
             - ghcr.io/jensh007/ocm//ocm.software/ocmcli-image:0.3.0-rc.2
             - foo/bar:1.0.0
           helm_charts: |
-            - charts/mariadb-11.4.2.tgz
+            - charts/mariadb.tgz:11.4.2.
             - https://charts.bitnami.com/bitnami/mariadb:10.11.2
           files: |
-            - name: readme.md
+            - name: README.md
               content_type: text/markdown
           references: |
             - name: mariadb
               componentName: github.com/jensh007/mariadb:10.11.2
-              version: ${MARIADB_VERSION}
+              version: '10.11.2'
           labels: |
             - name: last-scanned
               value: 2023-06-21T18:00:00
