@@ -53,6 +53,11 @@ def digest_file(fname: str) -> str:
 
     return digest.hexdigest()
 
+
+def normalize_name(name: str) -> str:
+    return name.lower().replace('.', '_')
+
+
 def digest_and_store_file(fname: str) -> tuple[str, int]:
     sha = digest_file(fname)
     os.makedirs('blobs', exist_ok=True)
@@ -84,9 +89,9 @@ def process_resources(ocm_input: ocm_input_model.OcmInput) -> list[cm.Resource]:
             else:
                 name, ver = chart_name.split(':')
                 _, _, res_name = name.rpartition('/')
-                res_name = res_name.replace('.', '_')
+                res_name = normalize_name(res_name)
                 sha, len  = digest_and_store_file(name)
-                print(f'sha of {chart_name} is: {sha}')
+                # print(f'sha of {chart_name} is: {sha}')
                 access = cm.OciBlobAccess(
                     type=cm.AccessType.LOCAL_BLOB,
                     imageReference=chart_name,
@@ -101,7 +106,36 @@ def process_resources(ocm_input: ocm_input_model.OcmInput) -> list[cm.Resource]:
                 type=cm.ArtefactType.HELM_CHART,
             )
             resources.append(res)
+
+    if ocm_input.files:
+        for file in ocm_input.files:
+            sha, len  = digest_and_store_file(file.name)
+            name = normalize_name(file.name)
+            # print(f'sha of {chart_name} is: {sha}')
+            access = cm.OciBlobAccess(
+                type=cm.AccessType.LOCAL_BLOB,
+                imageReference=name,
+                mediaType=file.content_type,
+                digest=sha,
+                size=len,
+            )
+            res = cm.Resource(
+                name=name,
+                version=ver,
+                access=access,
+                type=cm.ArtefactType.BLOB,
+            )
+            resources.append(res)
+
     return resources
+
+
+def process_labels(ocm_input: ocm_input_model.OcmInput) -> list[cm.Label] :
+    labels = []
+    # position currently ignored, only top-level
+    for label in ocm_input.labels:
+        labels.append(cm.Label(name=label.name, value=label.value))
+    return labels
 
 
 def parse_input_data(ocm_input: ocm_input_model.OcmInput, repoCtx: str) -> cm.ComponentDescriptor:
@@ -111,6 +145,7 @@ def parse_input_data(ocm_input: ocm_input_model.OcmInput, repoCtx: str) -> cm.Co
                 type=cm.AccessType.OCI_REGISTRY
     )
     resources = process_resources(ocm_input)
+    labels = process_labels(ocm_input)
 
     component = cm.Component(
         creationTime=datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(),
@@ -121,7 +156,9 @@ def parse_input_data(ocm_input: ocm_input_model.OcmInput, repoCtx: str) -> cm.Co
         sources=[],
         componentReferences=[],
         resources=resources,
+        labels=labels,
     )
+
     cd = cm.ComponentDescriptor(
         meta=cm.Metadata(schemaVersion=cm.SchemaVersion.V2),
         component=component,
@@ -145,7 +182,7 @@ def main():
         'files': [
             {
                 'content_type': 'text/markdown',
-                'name': 'readme.md'
+                'name': 'README.md'
             },
         ],
         'labels': [
