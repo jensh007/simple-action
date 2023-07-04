@@ -46,12 +46,25 @@ def write_cd(fname: str, cd: cm.ComponentDescriptor):
     with open(fname, 'w') as f:
         yaml.dump(data=dict, stream=f, Dumper=cm.EnumValueYamlDumper)
 
-
 def digest_file(fname: str) -> str:
-    with open(hashlib.__file__, "rb") as f:
-        digest = hashlib.file_digest(f, "sha256")
+    BUF_SIZE = 65536
+    sha = hashlib.sha256()
+    with open(fname, 'rb') as f:
+        while True:
+            data = f.read(BUF_SIZE)
+            if not data:
+                break
+            sha.update(data)
 
-    return digest.hexdigest()
+    return sha.hexdigest()
+
+
+# Python 3.11 only:
+# def digest_file(fname: str) -> str:
+#     with open(fname, "rb") as f:
+#         digest = hashlib.file_digest(f, "sha256")
+
+#     return digest.hexdigest()
 
 
 def normalize_name(name: str) -> str:
