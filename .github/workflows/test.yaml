@@ -6,7 +6,9 @@ jobs:
     name: call simple ocm action
     runs-on: ubuntu-latest
     steps:
-      - name: test simple ocm
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Simple OCM component creation
         uses: jensh007/simple-action@main
         with:
           comp_root: ghcr.io/jensh007/microblog/ocm
