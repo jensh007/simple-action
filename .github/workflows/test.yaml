@@ -27,10 +27,10 @@ jobs:
               componentName: github.com/jensh007/mariadb:10.11.2
               version: ${MARIADB_VERSION}
           labels: |
-            - key: last-scanned
+            - name: last-scanned
               value: 2023-06-21T18:00:00
-            - key: registry-provider
-              value: Google
+            - name: registry-provider
+              value: Github
       - name: Upload OCM Artifact
         uses: actions/upload-artifact@v3
         with:
