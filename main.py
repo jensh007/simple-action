@@ -2,10 +2,12 @@
 import os
 import pprint
 import sys
-# from ruamel.yaml import YAML
+import dacite
 import yaml
 
-import other
+import component_creator
+import ocm_input_model
+
 
 def main():
     global_dict:dict[str, any] = {}
@@ -20,7 +22,6 @@ def main():
     labels_yaml =  os.getenv('ocm_labels')
 
     print(f'my input variable "ocm_images": {image_yaml}')
-    other.other()
     print(f' Python version: {sys.version_info}')
 
     global_dict['name'] = name
@@ -45,6 +46,13 @@ def main():
 
     print("Global Dictionary:")
     pprint.pprint(global_dict)
+
+    ocm_input = dacite.from_dict(
+            data_class=ocm_input_model.OcmInput,
+            data=global_dict
+    )
+
+    component_creator.process_input(ocm_input, comp_root, 'gen/ca')
 
 
 if __name__ == '__main__':
