@@ -21,7 +21,7 @@ jobs:
             - https://charts.bitnami.com/bitnami/mariadb:10.11.2
           files: |
             - name: readme.md
-              content-type: text/markdown
+              content_type: text/markdown
           references: |
             - name: mariadb
               componentName: github.com/jensh007/mariadb:10.11.2
