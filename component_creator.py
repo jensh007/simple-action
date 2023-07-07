@@ -9,6 +9,7 @@ import shutil
 import hashlib
 
 import ocm_input_model
+import util
 
 def get_cd_from_file(cd_file: str) -> cm.ComponentDescriptor:
     with open(cd_file) as f:
@@ -46,33 +47,13 @@ def write_cd(fname: str, cd: cm.ComponentDescriptor):
     with open(fname, 'w') as f:
         yaml.dump(data=dict, stream=f, Dumper=cm.EnumValueYamlDumper)
 
-def digest_file(fname: str) -> str:
-    BUF_SIZE = 65536
-    sha = hashlib.sha256()
-    with open(fname, 'rb') as f:
-        while True:
-            data = f.read(BUF_SIZE)
-            if not data:
-                break
-            sha.update(data)
-
-    return sha.hexdigest()
-
-
-# Python 3.11 only:
-# def digest_file(fname: str) -> str:
-#     with open(fname, "rb") as f:
-#         digest = hashlib.file_digest(f, "sha256")
-
-#     return digest.hexdigest()
-
 
 def normalize_name(name: str) -> str:
     return name.lower().replace('.', '_')
 
 
 def digest_and_store_file(fname: str, path: Path | str) -> tuple[str, int]:
-    sha = digest_file(fname)
+    sha = util.digest_file(fname)
     blobs_dir = Path(path) / 'blobs'
     blobs_dir.mkdir(exist_ok=True)
     dest_name = path / f'blobs/sha256.{sha}'
@@ -96,6 +77,7 @@ def process_resources(
                 version=ver,
                 access=cm.OciAccess(imageReference=image),
                 type=cm.ArtefactType.OCI_IMAGE,
+                relation=cm.ResourceRelation.EXTERNAL
             )
             resources.append(res)
     if ocm_input.helm_charts:

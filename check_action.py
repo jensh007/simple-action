@@ -10,11 +10,10 @@ def main():
         'provider': 'github.com/jensh007',
         'helm_charts': [
             'charts/mariadb.tgz:11.4.2',
-            'https://charts.bitnami.com/bitnami/mariadb:10.11.2'
+            # 'https://charts.bitnami.com/bitnami/mariadb:10.11.2'
         ],
         'images': [
-            'ghcr.io/jensh007/ocm/ocm.software/ocmcli-image:0.3.0-rc.2',
-            'foo/bar:1.0.0'
+            'docker.io/library/bitnami/mariadb:10.11.2',
         ],
         'files': [
             {
